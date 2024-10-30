@@ -45,3 +45,19 @@ IO.puts ["Hello ", name, "!"]
 # string, or we can intersperse them.
 IO.puts Enum.join(["apple", "banana", "lemon"], ",")
 IO.puts Enum.intersperse(["apple", "banana", "lemon"], ",")
+
+# Summary notes
+# iodata and chardata are lists of binaries and integers. Those binaries and
+# integers can be arbitrarily nested inside lists. Their goal is to give
+# flexibility and performance when working with IO devices and files;
+#
+# the choice between iodata and chardata depends on the encoding of the IO
+# device. If the file is opened without encoding, the file expects iodata, and
+# the functions in the IO module starting with bin* must be used. The default
+# IO device (:stdio) and files opened with :utf8 encoding expect chardata and
+# work with the remaining functions in the IO module;
+#
+# charlists are a special case of chardata, where it exclusively uses a list of
+# integers Unicode codepoints. They can be created with the ~c sigil. Lists of
+# integers are automatically printed using the ~c sigil if all integers in a
+# list represent printable ASCII codepoints.
