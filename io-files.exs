@@ -31,3 +31,17 @@ IO.puts File.read!(filepath)
 # under the hood.
 IO.puts Path.join("foo", "bar")
 IO.puts Path.expand("~/projects")
+
+# iodata and chardata
+name = "Mary"
+
+# This results in copying Mary, which is ok, but bad for large strings
+IO.puts("Hello " <> name <> "!")
+
+# This does not copy, it creates a list called either iodata or chardata
+IO.puts ["Hello ", name, "!"]
+
+# This can be useful when writing to files, we can join them and create a new
+# string, or we can intersperse them.
+IO.puts Enum.join(["apple", "banana", "lemon"], ",")
+IO.puts Enum.intersperse(["apple", "banana", "lemon"], ",")
