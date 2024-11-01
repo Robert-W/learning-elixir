@@ -46,9 +46,17 @@ IO.puts(inspect(for {key, val} <- %{"a" => 1, "b" => 2}, into: %{}, do: {key, va
 
 # Streams are also collectibles, so we can do this example (careful it will lock
 # up the terminal, you'll need to use Ctrl+C to get out)
-steram = IO.stream(:stdio, :line)
-for line <- stream, into: stream do
-  String.upcase(line) <> "\n"
+# steram = IO.stream(:stdio, :line)
+# for line <- stream, into: stream do
+#   String.upcase(line) <> "\n"
+# end
+
+# On top of into:, you can do things like uniq: true or even reduce:
+# Here is an example of counting the frequency of lowercase characters
+map = for<<x <- "AbCabCABc">>, x in ?a..?z, reduce: %{} do
+  acc -> Map.update(acc, <<x>>, 1, & &1 + 1)
 end
+
+IO.puts(inspect(map))
 
 # See the docs for more https://hexdocs.pm/elixir/Kernel.SpecialForms.html#for/1
