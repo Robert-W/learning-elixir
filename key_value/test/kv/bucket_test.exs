@@ -2,8 +2,12 @@ defmodule KeyValue.BucketTest do
   use ExUnit.Case, async: true
 
   setup do
-    {:ok, bucket} = KeyValue.Bucket.start_link([])
+    bucket = start_supervised!(KeyValue.Bucket)
     %{bucket: bucket}
+  end
+
+  test "are temporary workers" do
+    assert Supervisor.child_spec(KeyValue.Bucket, []).restart == :temporary
   end
 
   test "stores values by key", %{bucket: bucket} do

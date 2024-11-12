@@ -1,5 +1,5 @@
 defmodule KeyValue.Bucket do
-  use Agent
+  use Agent, restart: :temporary
 
   @doc """
   Starts a new bucket
@@ -19,7 +19,9 @@ defmodule KeyValue.Bucket do
   Puts the `value` for the given `key` in the `bucket`
   """
   def put(bucket, key, value) do
-    Agent.update(bucket, &Map.put(&1, key, value))
+    Agent.update(bucket, fn state ->
+      Map.put(state, key, value)
+    end)
   end
 
   @doc """
